@@ -1,0 +1,47 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+@font-face{font-family:AN;src:url(anton.woff)}
+html,body{margin:0;background:#000}#stage{position:relative;width:1080px;height:1920px;overflow:hidden}
+canvas{position:absolute;inset:0}
+#vig{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 45%,rgba(0,0,0,0) 45%,rgba(0,0,10,.55) 100%);pointer-events:none}
+.pill{position:absolute;top:150px;background:rgba(8,14,24,.82);border:2px solid rgba(255,255,255,.18);border-radius:16px;padding:10px 22px;font-family:AN;color:#fff;font-size:44px;letter-spacing:1px}
+.pill small{display:block;font-size:18px;color:#8fb0c8;letter-spacing:3px}
+#cap{position:absolute;left:0;right:0;top:1560px;text-align:center;font-family:AN;font-size:92px;color:#fff;-webkit-text-stroke:9px #0b0d14;paint-order:stroke fill;letter-spacing:2px}
+#cap b{color:#ff4058;font-weight:normal}
+#cam{position:absolute;inset:60px 50px 400px 50px;border:0;display:none;font-family:AN;color:#fff;font-size:30px;letter-spacing:3px}
+#cam i{position:absolute;width:60px;height:60px;border:5px solid #fff}
+</style><script type="importmap">{"imports":{"three":"./node_modules/three/build/three.module.js"}}</script></head><body>
+<div id="stage"><canvas id="gl" width="1080" height="1920"></canvas><div id="vig"></div>
+<div class="pill" style="left:50px" id="p1"><small>DEPTH</small>214 M</div><div class="pill" style="right:50px"><small>SERIES</small><span style="color:#ffc43c">WHAT IF?</span></div>
+<div id="cam"><i style="left:0;top:0;border-right:0;border-bottom:0"></i><i style="right:0;top:0;border-left:0;border-bottom:0"></i><i style="left:0;bottom:0;border-right:0;border-top:0"></i><i style="right:0;bottom:0;border-left:0;border-top:0"></i><span style="position:absolute;left:30px;top:20px">BEACH CAM 01</span><span style="position:absolute;right:30px;top:20px"><span style="color:#ff4058">●</span> REC</span></div>
+<div id="ui"></div><div id="cap"></div></div>
+<script type="module">
+import * as THREE from 'three'; import { makeChar2D, layer, skyGradient, OUT } from './char2d.js'; import { UI, CSS } from './ui2d.js'; document.head.appendChild(Object.assign(document.createElement('style'), { textContent: CSS })); const ui = document.getElementById('ui');
+await document.fonts.load('40px AN');
+const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('gl'), antialias: true, preserveDrawingBuffer: true }); renderer.outputColorSpace = THREE.SRGBColorSpace;
+const scene = new THREE.Scene(); const camera = new THREE.PerspectiveCamera(40, 1080 / 1920, .05, 500);
+skyGradient(scene, [[0, '#0b1030'], [.45, '#27306a'], [.55, '#7a4a8a'], [.68, '#f08a5a'], [.78, '#ffd08a'], [1, '#ffd08a']]); scene.fog = new THREE.Fog(0x8a5a8a, 14, 70);
+let sd = 5; const r = () => (sd = (sd * 16807) % 2147483647) / 2147483647;
+// moon + glow
+layer(scene, 60, 60, -80, 4, (g, w, h) => { const gr = g.createRadialGradient(w * .68, h * .3, 0, w * .68, h * .3, w * .22); gr.addColorStop(0, 'rgba(255,240,210,.9)'); gr.addColorStop(.18, 'rgba(255,230,190,.9)'); gr.addColorStop(.2, 'rgba(255,220,170,.25)'); gr.addColorStop(1, 'rgba(255,220,170,0)'); g.fillStyle = gr; g.fillRect(0, 0, w, h); }, { fog: false });
+// far sea + horizon haze
+layer(scene, 160, 10, -60, -2, (g, w, h) => { const gr = g.createLinearGradient(0, 0, 0, h); gr.addColorStop(0, '#f7a86a'); gr.addColorStop(.3, '#5a5a9a'); gr.addColorStop(1, '#27306a'); g.fillStyle = gr; g.fillRect(0, h * .3, w, h); g.fillStyle = 'rgba(255,220,170,.5)'; for (let i = 0; i < 60; i++) g.fillRect(w * .55 + r() * w * .25, h * .34 + i * 2.2, 30 + r() * 120, 2); }, { fog: false });
+// palm silhouettes mid
+const palms = (col, n) => (g, w, h) => { g.fillStyle = col; g.strokeStyle = col; for (let i = 0; i < n; i++) { const x = (i + .3 + r() * .4) / n * w, th = h * (.5 + r() * .35); g.lineWidth = 34; g.beginPath(); g.moveTo(x, h); g.quadraticCurveTo(x + 30, h - th / 2, x + 10, h - th); g.stroke(); for (let k = 0; k < 7; k++) { const a = -Math.PI + k / 6 * Math.PI; g.beginPath(); g.moveTo(x + 10, h - th); g.quadraticCurveTo(x + 10 + Math.cos(a) * 90, h - th + Math.sin(a) * 90 - 30, x + 10 + Math.cos(a) * 170, h - th + Math.sin(a) * 60 + 40); g.lineWidth = 30; g.stroke(); } } };
+layer(scene, 70, 14, -26, 0, palms('#3a3468', 7)); layer(scene, 50, 12, -12, 0, palms('#1d1a40', 4));
+// ground: sand with texture
+const gc = document.createElement('canvas'); gc.width = gc.height = 1024; { const g = gc.getContext('2d'); const gr = g.createLinearGradient(0, 0, 0, 1024); gr.addColorStop(0, '#8a6a8a'); gr.addColorStop(1, '#e0a878'); g.fillStyle = gr; g.fillRect(0, 0, 1024, 1024); for (let i = 0; i < 2500; i++) { g.fillStyle = `rgba(${r() > .5 ? '255,230,190' : '90,50,70'},${.08 + r() * .12})`; g.fillRect(r() * 1024, r() * 1024, 2 + r() * 6, 2); } }
+const gt = new THREE.CanvasTexture(gc); gt.colorSpace = THREE.SRGBColorSpace; const ground = new THREE.Mesh(new THREE.PlaneGeometry(120, 80), new THREE.MeshBasicMaterial({ map: gt })); ground.rotation.x = -Math.PI / 2; ground.position.z = -30; scene.add(ground);
+// foreground grass (blurred, dark)
+const fg = layer(scene, 9, 1.3, 5.2, -.2, (g, w, h) => { g.filter = 'blur(6px)'; for (let i = 0; i < 140; i++) { const x = r() * w; g.strokeStyle = r() > .5 ? '#141230' : '#241c48'; g.lineWidth = 10 + r() * 10; g.beginPath(); g.moveTo(x, h); g.quadraticCurveTo(x + (r() - .5) * 80, h * .5, x + (r() - .5) * 160, h * (.1 + r() * .5)); g.stroke(); } }, { fog: false });
+const maya = makeChar2D(scene, { top: '#2fbf9f', top2: '#27a488', hair: '#4a2f1e', style: 'bun', skin: '#f0c9a4' });
+const sam = makeChar2D(scene, { top: '#6a7a3a', top2: '#5a6a30', hair: '#2a1a10', hat: '#f08a1a', skin: '#e8b48c', pants: '#2a2d3a' });
+const cap = document.getElementById('cap'), camO = document.getElementById('cam');
+window.shot = (n) => { camO.style.display = 'none'; ui.style.display = 'none';
+  if (n === 0) { camera.position.set(.3, 1.6, 8.2); camera.lookAt(0, 1.5, 0); maya.at(-.9, 0, 0, camera); sam.at(.9, 0, .3, camera); maya.set({ brows: 'worried', mouth: 'open', look: 1 }, { arms: 'point' }); sam.set({ brows: 'worried', mouth: 'closed', eye: 1.1 }, {}); cap.innerHTML = 'WHERE\'S THE <b>MOON?</b>'; }
+  if (n === 1) { camera.position.set(-1.3, 1.75, 4.1); camera.lookAt(-.9, 1.55, 0); maya.at(-.9, 0, 0, camera); sam.at(1.4, 0, -2, camera); maya.set({ brows: 'worried', mouth: 'open', tears: 1 }, {}); sam.set({ brows: 'worried' }, {}); cap.innerHTML = 'SAM... <b>LOOK.</b>'; }
+  if (n === 2) { camera.position.set(0, 3.2, 13); camera.lookAt(0, 2.6, 0); maya.at(-.6, 0, 0, camera); sam.at(.8, 0, .2, camera); maya.set({}, { back: true }); sam.set({}, { back: true }); cap.innerHTML = 'NIGHT <span style="color:#ffc43c">ONE.</span>'; camO.style.display = 'block'; }
+  if (n === 2) { camO.style.display = 'none'; ui.style.display = 'block'; ui.innerHTML = UI.cam({ name: 'BEACH CAM 01', zoom: '3X', stamp: 'NIGHT 1 · 23:47:16' }); }
+  if (n === 3) { ui.style.display = 'block'; ui.innerHTML = UI.dashboard({ stats: [{ label: 'TIDE', value: '33', unit: '%' }, { label: 'MOONLIGHT', value: '0', unit: '%' }, { label: 'TILT', value: '23.4', unit: '°' }, { label: 'DAY', value: '24', unit: 'H' }], status: 'TILT: UNSTABLE', red: true, t: 1 }); cap.innerHTML = 'TURNS <b>RED.</b>'; }
+  renderer.render(scene, camera); };
+window.ready = true;
+</script></body></html>

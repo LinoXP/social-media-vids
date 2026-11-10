@@ -1,0 +1,3 @@
+const {chromium}=require('playwright');(async()=>{const b=await chromium.launch({args:['--use-angle=swiftshader','--enable-unsafe-swiftshader','--ignore-gpu-blocklist']});const p=await b.newPage({viewport:{width:1080,height:1920},deviceScaleFactor:1});p.on('pageerror',e=>console.log('ERR',e.message));await p.goto('http://localhost:8140/proto.html');await p.waitForFunction('window.ready',{timeout:20000});
+for(const n of [0,0,1,2,3]){let t=Date.now();await p.evaluate((n)=>window.shot(n),n);const a=Date.now()-t;t=Date.now();await p.screenshot({path:'p'+n+'.jpg',type:'jpeg',quality:92,timeout:60000});}
+await b.close();})().catch(e=>console.log(String(e).slice(0,300)))

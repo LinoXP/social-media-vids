@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<style>
+@font-face { font-family: AN; src: url(anton.woff); }
+@font-face { font-family: IB; src: url(InterDisplay-Bold.otf); }
+html, body { margin: 0; width: 1080px; height: 1920px; overflow: hidden; background: #000; }
+canvas#gl { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+#fx { position: absolute; inset: 0; pointer-events: none; }
+.badge { position: absolute; top: 220px; padding: 12px 22px 10px; border-radius: 22px; background: rgba(10,12,20,.78); border: 2px solid rgba(255,255,255,.16); }
+.badge .l { font-family: IB; font-size: 26px; color: #aab2c8; letter-spacing: 1px; }
+.badge .v { font-family: AN; font-size: 56px; line-height: 1.05; color: #f5f5fa; }
+#chip { position: absolute; top: 360px; left: 0; right: 0; text-align: center; }
+#chip span { display: inline-block; padding: 10px 26px; border-radius: 40px; background: rgba(10,12,20,.82); border: 2px solid rgba(255,255,255,.2);
+  font-family: IB; font-size: 38px; color: #f5f5fa; letter-spacing: 1px; }
+#title { position: absolute; top: 380px; left: 0; right: 0; text-align: center; }
+#title .t { display: inline-block; padding: 14px 30px; background: #e8572a; border-radius: 16px; font-family: AN; font-size: 70px; color: #fff; line-height: 1.05;
+  border: 4px solid #2a1a12; box-shadow: 0 6px 0 #2a1a12; }
+#title .s { margin-top: 12px; font-family: IB; font-size: 30px; color: #fff; text-shadow: 0 2px 6px #000; }
+#readout { position: absolute; left: 0; right: 0; top: 470px; text-align: center; }
+#readout span { display: inline-block; padding: 16px 30px; border-radius: 20px; background: rgba(10,12,20,.85); border: 3px solid #ffc43c;
+  font-family: AN; font-size: 72px; color: #ffc43c; letter-spacing: 1px; }
+#readout small { display: block; font-family: IB; font-size: 28px; color: #aab2c8; letter-spacing: 2px; }
+#bars { position: absolute; left: 140px; right: 140px; top: 520px; display: none; }
+.bar { margin: 26px 0; font-family: IB; font-size: 34px; color: #f5f5fa; }
+.bar div { height: 70px; border-radius: 14px; margin-top: 10px; }
+#cap { position: absolute; left: 60px; right: 60px; top: 1300px; text-align: center; font-family: AN; font-size: 88px; line-height: 1.05;
+  color: #f5f5fa; -webkit-text-stroke: 8px #000; paint-order: stroke fill; word-spacing: 8px; }
+#who { position: absolute; left: 0; right: 0; top: 1250px; text-align: center; font-family: IB; font-size: 30px; color: #fff; text-shadow: 0 2px 6px #000; }
+.ab { position: absolute; width: 150px; height: 150px; border-radius: 34px; font-family: AN; font-size: 110px; color: #fff; left: 465px; top: 1080px;
+  display: none; align-items: center; justify-content: center; -webkit-text-stroke: 4px #000; paint-order: stroke fill; }
+#vign { position: absolute; inset: 0; pointer-events: none; background: radial-gradient(ellipse at 50% 45%, rgba(0,0,0,0) 55%, rgba(0,0,0,.45) 100%); }
+</style>
+<script type="importmap">{ "imports": { "three": "./node_modules/three/build/three.module.js", "three/addons/": "./node_modules/three/examples/jsm/",
+  "topojson-client": "./node_modules/topojson-client/src/index.js" } }</script>
+</head><body>
+<canvas id="gl" width="1080" height="1920"></canvas>
+<div id="fx"></div><div id="vign"></div>
+<div class="badge" id="spd" style="left:40px"><div class="l">TIME</div><div class="v" id="spdv"></div></div>
+<div class="badge" style="right:150px"><div class="l">SERIES</div><div class="v" style="color:#ffc43c">WHAT IF?</div></div>
+<div id="chip"><span id="chipv"></span></div>
+<div id="title"><div class="t">WHAT IF EVERYONE DISAPPEARED?</div><div class="s">8:00 AM · DOWNTOWN · SILENT</div></div>
+<div id="readout"><span id="rov"></span></div>
+<div id="bars"><div class="bar">x<div id="bigbar" style="background:#40dcc8;width:0%"></div></div>
+  <div class="bar">TIDES WITHOUT MOON · ~1/3<div style="background:#ff4058;width:33%"></div></div></div>
+<div class="ab" id="abA" style="background:#ffc43c">A</div><div class="ab" id="abB" style="background:#ff4058">B</div>
+<div id="who"></div>
+<div id="cap"></div>
+<script type="module" src="scene.js"></script>
+</body></html>
