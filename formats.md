@@ -10,7 +10,7 @@ How formats are tested:
 - About 1 in 3 new videos is an experiment (a new format or a re-test). The rest come from KEPT formats.
 - Fixed for every video (not tested): strong first frame, voice from 0.0 s, question on screen from frame 1, loop ending, ≥60 s.
 
-## Current status (updated 2026-11-23)
+## Current status (updated 2026-11-25)
 
 | Format | Status | Tries (new hook rules) | TikTok % watched | Instagram % watched | Notes |
 |---|---|---|---|---|---|
@@ -31,6 +31,11 @@ How formats are tested:
 ## Log
 | Date | Video | Format | TikTok % | IG % | YT views | Result |
 |---|---|---|---|---|---|---|
-| 2026-11-24 | gravity_ladder | Ladder | | | | |
-| 2026-11-24 | ice_minutes | Minute by minute | | | | |
-| 2026-11-24 | asteroid_story | Story re-test | | | | |
+| 2026-11-24 | gravity_ladder | Ladder (try 1, new hooks) | 28% | 37% | 1,033 | Above avg (TT avg ~15%, IG ~29%) |
+| 2026-11-24 | ice_minutes | Minute by minute (try 1) | 18% | 21% | (Wed) | TT above, IG below |
+| 2026-11-24 | asteroid_story | Story re-test (try 1) | 17% | 102% (replays) | 559 | Above avg |
+| 2026-11-25 | wind_ladder | Ladder (try 2) | | | | |
+| 2026-11-25 | yellowstone_story | Story (try 2) | | | | |
+| 2026-11-25 | sea_ab | A/B (new hook rules, try 1) | | | | |
+
+Baseline (Nov 20–23, full-length videos, old hooks): TikTok ~15% watched, Instagram ~29%. First-day numbers; re-check after 3 days.
