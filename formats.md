@@ -20,10 +20,10 @@ How formats are tested:
 | Invent the ___ | PROBATION | 0 | 13% | 36% | Low views |
 | Minute by minute (timer) | TESTING | 0 | – | – | New, first: ice lake (Nov 24) |
 | World-scale "What if" story | RE-TEST | 0 | – | – | Old format; "Sun went out" is top YT Short (1,346). Re-test: asteroid (Nov 24) |
+| Ranking countdown (5 → 1) | TESTING | 0 | – | – | New, first: coldest places (Nov 26) |
 
 ## Ideas waiting to be tested
 - Size zoom (ant → largest star, size counter)
-- Ranking countdown (5 → 1)
 - Myth or true? (5 quick claims)
 - Real disaster rebuilt (security-camera look, real dates)
 - Guess the number (answer only in the last second)
@@ -37,5 +37,8 @@ How formats are tested:
 | 2026-11-25 | wind_ladder | Ladder (try 2) | | | | |
 | 2026-11-25 | yellowstone_story | Story (try 2) | | | | |
 | 2026-11-25 | sea_ab | A/B (new hook rules, try 1) | | | | |
+| 2026-11-26 | coffee_ladder | Ladder (try 3) | | | | |
+| 2026-11-26 | coldest_ranking | Ranking (NEW, try 1) | | | | |
+| 2026-11-26 | plane_minutes | Minute-by-minute (try 2) | | | | |
 
 Baseline (Nov 20–23, full-length videos, old hooks): TikTok ~15% watched, Instagram ~29%. First-day numbers; re-check after 3 days.
